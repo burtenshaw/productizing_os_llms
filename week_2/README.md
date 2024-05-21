@@ -112,3 +112,5 @@ huggingface-cli repo create <repo_name>
 ```bash
 huggingface-cli repo upload --path <path_to_model> <repo_name>
 ```
+
+4. Refine the model card with the model details and evaluation results, using the Hugging Face model card template.
