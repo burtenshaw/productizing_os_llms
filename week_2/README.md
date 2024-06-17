@@ -14,6 +14,8 @@ The outcome of the week is to train an open source model on a dataset with ORPO,
 
 ## Background
 
+For detailed background on the tools and frameworks used in this project, refer to the written material, lectures, and references provided. Here is a brief reminder of the key concepts.
+
 ### Odds Ratio Preference Optimization (ORPO)
 
 Odds Ratio Preference Optimization (ORPO) by Jiwoo Hong, Noah Lee, and James Thorne studies the crucial role of SFT within the context of preference alignment. Using preference data the method posits that a minor penalty for the disfavored generation together with a strong adaption signal to the chosen response via a simple log odds ratio term appended to the NLL loss is sufficient for preference-aligned SFT.
@@ -33,6 +35,10 @@ The official code can be found [huggingface/trl](https://github.com/huggingface/
 These instructions will guide you through the process of training an open source model on a dataset with ORPO, evaluating the model on a test dataset, and publishing the model to Hugging Face. They supply the basic steps to complete the project. You are encouraged to modify and expand upon these steps to create a unique project.
 
 ### Train an open source model on a dataset with ORPO
+
+#### Option 1: Using TRL scripts
+
+This option is ideal if you have access to a local machine or a cloud environment with GPU support. You can use the TRL scripts to train an open source model on a dataset with ORPO. You should refer to the TRL documentation for more information on how to use the scripts.
 
 1. Clone the Transformers Reinforcement Learning repository:
 
@@ -64,6 +70,43 @@ python examples/scripts/orpo.py \
     --bf16 \
     --logging_first_step \
     --no_remove_unused_columns
+```
+
+#### Option 2: Using AutoTrain Advance
+
+If you do not have access to a local machine or a cloud environment with GPU support, you can use AutoTrain Advance via a Google Colab notebook to train an open source model on a dataset with ORPO. You should refer to the AutoTrain Advance documentation for more information on how to use the library.
+
+1. Install the AutoTrain Advance library:
+
+```bash
+pip install -U autotrain-advanced > install_logs.txt
+autotrain setup --colab > setup_logs.txt
+```
+
+2. Train an open source model on a dataset with ORPO. For example, to train GPT-2 on the aligned ORPO dataset:
+
+```bash
+autotrain llm  \
+    --train  \
+    --model abhishek/llama-2-7b-hf-small-shards  \
+    --project-name my-autotrain-llm  \
+    --data-path data/  \
+    --text-column text  \
+    --lr 0.0002  \
+    --batch-size 1  \
+    --epochs 1  \
+    --block-size 1024  \
+    --warmup-ratio 0.1  \
+    --lora-r 16  \
+    --lora-alpha 32  \
+    --lora-dropout 0.05  \
+    --weight-decay 0.01  \
+    --gradient-accumulation 4  \
+    --quantization int4  \
+    --mixed-precision fp16  \
+    --username abc  \
+    --trainer orpo
+
 ```
 
 ### Evaluate the model on a test dataset
@@ -114,3 +157,38 @@ huggingface-cli repo upload --path <path_to_model> <repo_name>
 ```
 
 4. Refine the model card with the model details and evaluation results, using the Hugging Face model card template.
+
+https://huggingface.co/learn/nlp-course/chapter4/4?fw=pt
+
+## Submission
+
+To submit your project, you should create submit the created model repository on Hugging Face, by defining these attributes in the submission form:
+
+<!-- TODO: Define the submission form attributes -->
+
+<!-- table with submission  -->
+
+## Evaluation Guidelines for peer reviewers
+
+Your work will be peer-reviewed based on the published model, the evaluation results, and the model presentation. You should ensure that the model is well-documented and easy to use. You should also ensure that the evaluation results are clear and informative.
+
+### Basic criteria
+
+- The model is published to Hugging Face
+- The model is documented with a model card
+- The model card contains the model details and evaluation results
+
+### Advanced criteria
+
+- The model is evaluated on a benchmark task
+- Model evaluation results are related to a use case
+- Model evaluation results are visualized
+- Model evaluation results are compared to the baseline
+- Model evaluation results improve upon the baseline
+
+### Evaluation tiers
+
+- Submitted: Any of the basic criteria are met
+- Basic: All of the basic criteria are met
+- Good: All of the basic criteria are met and any of the advanced criteria are met
+- Excellent: All of the basic criteria are met and all of the advanced criteria are met
